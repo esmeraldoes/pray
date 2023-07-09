@@ -165,6 +165,7 @@ SWAGGER_SETTINGS = {
     'DEFAULT_AUTO_SCHEMA_CLASS': 'drf_yasg.openapi.AutoSchema',
     # 'DEFAULT_API_URL': 'http://127.0.0.1/api/swagger/',
     'DEFAULT_API_URL': 'https://prayerapp1.onrender.com/api/swagger/',
+    'DEFAULT_VALIDATOR_CLASS': None,
     # Adjust other settings as needed
 }
 
