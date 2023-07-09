@@ -8,16 +8,15 @@ from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView
 
 
 urlpatterns = [
-    # path('', lambda request: redirect('swagger-ui'), name='root'),  # Redirect root URL to Swagger documentation
+    
     path('admin/', admin.site.urls),
-    path('', include('bibleApp.urls')),
     path('accounts/', include('allauth.urls')),
     path('rest-auth/', include('rest_auth.urls')),
     path('rest-auth/registration/', include('rest_auth.registration.urls')),
     path('api-auth/', include('rest_framework.urls')),
 
     path('api/schema/', SpectacularAPIView.as_view(), name='schema'),
-    path('api/docs/', SpectacularSwaggerView.as_view(url_name='schema'), name='swagger-ui'),
+    path('', SpectacularSwaggerView.as_view(url_name='schema'), name='swagger-ui'),
     path('api/', include('bibleApp.urls')),
 
 ]
