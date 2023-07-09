@@ -6,17 +6,25 @@ from drf_yasg import openapi
 from drf_yasg.views import get_schema_view
 from rest_framework.permissions import AllowAny
 
+# Create a custom schema generator
+class CustomSchemaGenerator(openapi.SchemaGenerator):
+    def get_schema(self, request=None, public=False):
+        schema = super().get_schema(request, public)
+        schema.validate = False  # Disable schema validation
+        return schema
+
 # Create a schema view for Swagger documentation
 schema_view = get_schema_view(
     openapi.Info(
-        title="Your API Title",
+        title="Regimen Endpoints",
         default_version='v1',
-        description="API documentation for Your API",
+        description="API documentation for Regimen",
         terms_of_service="",
         contact=openapi.Contact(email="contact@example.com"),
         license=openapi.License(name="MIT License"),
     ),
     public=True,
+    generator_class=CustomSchemaGenerator, 
     permission_classes=[AllowAny],
 )
 
