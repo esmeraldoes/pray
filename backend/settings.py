@@ -41,7 +41,8 @@ INSTALLED_APPS = [
 
     'rest_auth',
     'social_django',
-    'drf_yasg',
+    'drf_spectacular',
+    'django_filters',
     'rest_framework.authtoken',
 
     'rest_framework',
@@ -115,7 +116,6 @@ REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': (
         'rest_framework.permissions.IsAuthenticated',
     ),
-    'DEFAULT_GENERATOR_CLASS': 'drf_yasg.generators.OpenAPISchemaGenerator',
     'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.coreapi.AutoSchema',
     
 }
@@ -161,8 +161,15 @@ LOGOUT_URL = 'rest_framework:logout'
 
 LOGIN_REDIRECT_URL = '/'
 
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'REGIMEN ENDPOINT',
+    'DESCRIPTION': 'Endpoints for the prayer app',
+    'VERSION': '1.0.0',
+}
+
+
 SWAGGER_SETTINGS = {
-    'DEFAULT_AUTO_SCHEMA_CLASS': 'drf_yasg.openapi.AutoSchema',
+    
     # 'DEFAULT_API_URL': 'http://127.0.0.1/api/swagger/',
     'DEFAULT_API_URL': 'https://prayerapp1.onrender.com/api/swagger/',
     'DEFAULT_VALIDATOR_CLASS': None,
