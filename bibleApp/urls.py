@@ -5,12 +5,14 @@ from .views import RegisterView, LoginView, LogoutView
 from .views import RegisterView, FacebookLogin, GoogleLogin
 from .views import ChurchCreateView, CommunityCreateView, TeamCreateView
 from .views import StartPrayerView, EndPrayerView, PrayerUpdatesView
+from rest_framework import routers, urls
 
 from drf_yasg import openapi
 from drf_yasg.views import get_schema_view
 from rest_framework.permissions import AllowAny
 # from django_grpc_framework import services
 from bibleApp import prayer_tracker_service
+from prayer_tracker_server import serve
 
 
 schema_view = get_schema_view(
@@ -28,6 +30,9 @@ schema_view = get_schema_view(
 
 urlpatterns = [
     path('accounts/', include('allauth.urls')),
+    path('rest-auth/', include('rest_auth.urls')),
+    path('rest-auth/registration/', include('rest_auth.registration.urls')),
+    path('api-auth/', include(urls)),
     # ...
     path('api/register/', RegisterView.as_view(), name='register'),
     path('api/login/', LoginView.as_view(), name='loginview'),
@@ -45,6 +50,9 @@ urlpatterns = [
     path('api/swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='swagger-ui'),
     path('api/redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='redoc'),
     # gRPC
+    path('grpc/', serve),
+    # path('grpc/', services.server.prune_request_stream(prayer_tracker_service.PrayerTrackerService)),
+
     # path('grpc', services.server.prune_request_stream(prayer_tracker_service.PrayerTrackerService)),
     path('start-prayer/', StartPrayerView.as_view(), name='start-prayer'),
     path('end-prayer/', EndPrayerView.as_view(), name='end-prayer'),
