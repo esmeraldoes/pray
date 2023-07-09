@@ -10,7 +10,7 @@ from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView
 
 
 urlpatterns = [
-    path('', lambda request: redirect('swagger-ui'), name='root'),  # Redirect root URL to Swagger documentation
+    # path('', lambda request: redirect('swagger-ui'), name='root'),  # Redirect root URL to Swagger documentation
     path('admin/', admin.site.urls),
     path('', include('bibleApp.urls')),
     path('accounts/', include('allauth.urls')),
