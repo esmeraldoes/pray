@@ -37,6 +37,9 @@ class LoginSerializer(serializers.Serializer):
     username = serializers.CharField()
     password = serializers.CharField()
 
+class CustomLogoutSerializer(serializers.Serializer):
+    pass
+
 
 
 class ChurchSerializer(serializers.ModelSerializer):
@@ -44,14 +47,27 @@ class ChurchSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Church
-        exclude = []  # Remove 'user' from the exclude option
+        fields = ['name', 'email']
+        #exclude = []  # Remove 'user' from the exclude option
+        extra_kwargs = {
+            'user': {'read_only': True}
+        }
 
     def create(self, validated_data):
+        if not self.context['request'].user.is_authenticated:
+            raise serializers.ValidationError('User must be authenticated.')
+
         user = self.context['request'].user
-        validated_data['user'] = user  # Set the 'user' field in the validated data
+        if not isinstance(user, User):
+            raise serializers.ValidationError('User must be an instance of CustomUser.')
+
+        validated_data['user'] = user
         church = Church.objects.create(**validated_data)
         return church
 
+
+class PrayerResponseSerializer(serializers.Serializer):
+    message = serializers.CharField()
 
 
 

@@ -20,6 +20,8 @@ class CustomUser(AbstractUser):
 class Church(models.Model):
     name = models.CharField(max_length=100)
     email = models.EmailField()
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True, blank=True)
+
 
     def clean(self):
         if not self.email.endswith('.org'):
@@ -41,5 +43,13 @@ class Team(models.Model):
     members = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='teams')
 
     # Other fields and methods
+
+class PrayerSession(models.Model):
+    user_id = models.CharField(max_length=255)
+    start_time = models.DateTimeField(auto_now_add=True)
+    end_time = models.DateTimeField(null=True)
+    total_time = models.DurationField(null=True)
+    voice_time = models.DurationField(null=True)
+
 
 

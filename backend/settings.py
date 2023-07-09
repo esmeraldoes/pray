@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/4.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
-
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -25,13 +25,13 @@ SECRET_KEY = 'django-insecure-)z9(n(yj8j&)&ke43^11ob91=b)ex$*fkk%*a)#b_g1a_bqliz
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["https://prayerapp.onrender.com",'prayerapp.onrender.com', '127.0.0.1', '*']
 
 
 # Application definition
 
 INSTALLED_APPS = [
-    # 'django.contrib.admin',
+    'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
@@ -55,6 +55,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -63,6 +64,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 ROOT_URLCONF = 'backend.urls'
 
@@ -105,8 +107,6 @@ AUTHENTICATION_BACKENDS = [
     'social_core.backends.google.GoogleOAuth2',
 ]
 SITE_ID = 1 
-
-
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework.authentication.TokenAuthentication',  # Example: Token authentication
@@ -115,7 +115,10 @@ REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': (
         'rest_framework.permissions.IsAuthenticated',
     ),
+    'DEFAULT_GENERATOR_CLASS': 'drf_yasg.generators.OpenAPISchemaGenerator',
+    
 }
+
 
 
 # Configure Django Allauth settings
@@ -136,6 +139,16 @@ SOCIALACCOUNT_PROVIDERS = {
     },
 }
 
+import threading
+from prayer_tracker_server import serve
+
+def start_grpc_server():
+    server_thread = threading.Thread(target=serve)
+    server_thread.start()
+
+# Start the gRPC server when the Django application starts
+start_grpc_server()
+
 # Configure Django Rest Framework settings
 REST_AUTH_SERIALIZERS = {
     'LOGIN_SERIALIZER': 'bibleApp.serializers.CustomLoginSerializer',
@@ -145,7 +158,14 @@ REST_AUTH_SERIALIZERS = {
 LOGIN_URL = 'rest_framework:login'
 LOGOUT_URL = 'rest_framework:logout'
 
+LOGIN_REDIRECT_URL = '/'
 
+SWAGGER_SETTINGS = {
+    'DEFAULT_AUTO_SCHEMA_CLASS': 'drf_yasg.openapi.AutoSchema',
+    # 'DEFAULT_API_URL': 'http://127.0.0.1/api/swagger/',
+    'DEFAULT_API_URL': 'https://prayerapp.onrender.com/api/swagger/',
+    # Adjust other settings as needed
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
@@ -181,7 +201,8 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field

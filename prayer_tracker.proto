@@ -1,0 +1,146 @@
+syntax = "proto3";
+
+package prayertracker;
+
+message StartPrayerRequest {
+  string user_id = 1;
+}
+
+message StartPrayerResponse {
+  string message = 1;
+}
+
+message EndPrayerRequest {
+  string user_id = 1;
+}
+
+message EndPrayerResponse {
+  string message = 1;
+}
+
+message PrayerRequest {
+  string user_id = 1;
+}
+
+message PrayerResponse {
+  string message = 1;
+}
+
+message PrayerUpdateResponse {
+  bool voice_detected = 1;
+  bool prayer_ended = 2;
+}
+message ProcessVoiceRequest {
+  string user_id = 1;
+  bytes audio_data = 2;
+}
+
+service PrayerTrackerService {
+  rpc StartPrayer(StartPrayerRequest) returns (StartPrayerResponse) {}
+  rpc EndPrayer(EndPrayerRequest) returns (EndPrayerResponse) {}
+  rpc PrayerUpdates(PrayerRequest) returns (stream PrayerUpdateResponse) {}
+  rpc ProcessVoiceStream(stream ProcessVoiceRequest) returns (stream ProcessVoiceResponse);
+
+}
+
+message ProcessVoiceResponse {
+  string transcript = 1;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// syntax = "proto3";
+
+// package prayertracker;
+
+// service PrayerTrackerService {
+//   rpc StartPrayer (StartPrayerRequest) returns (StartPrayerResponse) {}
+//   rpc EndPrayer (EndPrayerRequest) returns (EndPrayerResponse) {}
+//   rpc PrayerUpdates (PrayerRequest) returns (stream PrayerUpdateResponse) {}
+// }
+
+// message StartPrayerRequest {
+//   string user_id = 1;
+// }
+
+// message StartPrayerResponse {
+//   string message = 1;
+// }
+
+// message EndPrayerRequest {
+//   string user_id = 1;
+// }
+
+// message EndPrayerResponse {
+//   string message = 1;
+// }
+
+// message PrayerRequest {
+//   string user_id = 1;
+// }
+
+// message PrayerUpdateResponse {
+//   bool voice_detected = 1;
+//   bool prayer_ended = 2;
+// }
+
+
+
+
+
