@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-)z9(n(yj8j&)&ke43^11ob91=b)ex$*fkk%*a)#b_g1a_bqliz
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["https://prayerapp.onrender.com",'prayerapp.onrender.com', '127.0.0.1', '*']
+ALLOWED_HOSTS = ["https://prayerapp1.onrender.com",'prayerapp1.onrender.com', '127.0.0.1', '*']
 
 
 # Application definition
@@ -163,7 +163,7 @@ LOGIN_REDIRECT_URL = '/'
 SWAGGER_SETTINGS = {
     'DEFAULT_AUTO_SCHEMA_CLASS': 'drf_yasg.openapi.AutoSchema',
     # 'DEFAULT_API_URL': 'http://127.0.0.1/api/swagger/',
-    'DEFAULT_API_URL': 'https://prayerapp.onrender.com/api/swagger/',
+    'DEFAULT_API_URL': 'https://prayerapp1.onrender.com/api/swagger/',
     # Adjust other settings as needed
 }
 
