@@ -1,18 +1,26 @@
 from django.urls import path
 from .views import RegisterView, LoginView, LogoutView
-from .views import ChurchCreateView, CommunityCreateView, TeamCreateView
-from .views import StartPrayerView, EndPrayerView, PrayerUpdatesView
+# from .views import ChurchCreateView, CommunityCreateView, TeamCreateView
+from .views import FacebookLogin, GoogleLogin, SocialAccountView, get_user_info, UserProfileView, UserRegistrationView
+from rest_framework.authtoken.views import obtain_auth_token
 
 urlpatterns = [
-    path('register/', RegisterView.as_view(), name='register'),
+    path('register1/', RegisterView.as_view(), name='register'),
+    path('token/', obtain_auth_token, name='token'),
+    path('facebook/', FacebookLogin, name='facebook_login'),
+    path('google/', GoogleLogin, name='google_login'),
     path('login/', LoginView.as_view(), name='loginview'),
     path('logout/', LogoutView.as_view(), name='logout'),
-    path('churches/', ChurchCreateView.as_view(), name='church-create'),
-    path('communities/', CommunityCreateView.as_view(), name='community-create'),
-    path('teams/', TeamCreateView.as_view(), name='team-create'),
-    path('start-prayer/', StartPrayerView.as_view(), name='start-prayer'),
-    path('end-prayer/', EndPrayerView.as_view(), name='end-prayer'),
-    path('prayer-updates/', PrayerUpdatesView.as_view(), name='prayer-updates'),
+    path('social_login/', SocialAccountView.as_view(),name='social_account'),
+    path('user-info/', get_user_info, name='user-info'),
+    # path('start-prayer/', StartPrayerView.as_view(), name='start-prayer'),
+    # path('end-prayer/', EndPrayerView.as_view(), name='end-prayer'),
+    # path('prayer-updates/', PrayerUpdatesView.as_view(), name='prayer-updates'),
+    # #####started here MONDAY
+    path('register2/', UserRegistrationView.as_view(), name='user-registration'),
+    # path('login2/', UserLoginView.as_view(), name='user-login'),
+    path('profile/', UserProfileView.as_view(), name='user-profile'),
+    
 ]
 
 

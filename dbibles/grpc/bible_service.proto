@@ -1,0 +1,68 @@
+syntax = "proto3";
+
+package bible;
+
+service BibleService {
+    rpc GetBibleVersions(EmptyRequest) returns (BibleVersionList) {}
+    rpc GetBooksInVersion(BibleVersionRequest) returns (BibleBookList) {}
+    rpc GetChaptersInBook(BibleChapterRequest) returns (BibleChapterList) {}
+    rpc GetVerseInChapter(BibleVerseRequest) returns (BibleVerseResponse) {}
+    rpc CompareVerses(CompareVersesRequest) returns (CompareVersesResponse) {}
+}
+
+message EmptyRequest {}
+
+message BibleVersionRequest {
+    string version = 1;
+}
+
+message BibleChapterRequest {
+    string version = 1;
+    string book = 2;
+}
+
+message BibleVerseRequest {
+    string version = 1;
+    string book = 2;
+    int32 chapter = 3;
+    int32 verse = 4;
+}
+
+message CompareVersesRequest {
+    repeated string versions = 1;
+    string book = 2;
+    int32 chapter = 3;
+    int32 verse = 4;
+}
+
+message BibleVersionList {
+    repeated BibleVersion versions = 1;
+}
+
+message BibleVersion {
+    string name = 1;
+}
+
+message BibleBookList {
+    repeated BibleBook books = 1;
+}
+
+message BibleBook {
+    string name = 1;
+}
+
+message BibleChapterList {
+    repeated int32 chapters = 1;
+}
+
+message BibleVerseResponse {
+    string version = 1;
+    string book = 2;
+    int32 chapter = 3;
+    int32 verse = 4;
+    string content = 5;
+}
+
+message CompareVersesResponse {
+    repeated BibleVerseResponse verses = 1;
+}

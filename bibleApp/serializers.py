@@ -1,15 +1,10 @@
-# authentication/serializers.py
+
 
 from django.contrib.auth import get_user_model
 from rest_framework import serializers
 
-
-from .models import Church, Community, Team
-
 User = get_user_model()
 
-
-# serializers.py
 
 from rest_auth.serializers import LoginSerializer
 
@@ -17,10 +12,55 @@ class CustomLoginSerializer(LoginSerializer):
     def validate(self, attrs):
         attrs = super().validate(attrs)
 
-        # Add custom validation or modifications if needed
-
         return attrs
 
+
+from rest_framework import serializers
+from allauth.account.models import EmailAddress 
+
+class UserInfoSerializer(serializers.Serializer):
+    username = serializers.CharField()
+    email = serializers.EmailField()
+    first_name = serializers.CharField()
+    last_name = serializers.CharField()
+   
+
+    def to_representation(self, instance):
+        user = self.context['request'].user
+        try:
+            email_address = EmailAddress.objects.get(user=user, primary=True)
+            user_info = {
+                'username': user.username,
+                'email': email_address.email,
+                'first_name': user.first_name,
+                'last_name': user.last_name,
+            }
+            return user_info
+        except EmailAddress.DoesNotExist:
+            return {}
+
+from rest_framework import serializers
+from .models import CustomUser, UserProfile
+
+class UserProfileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UserProfile
+        fields = ('gender', 'date_of_birth', 'profile_picture')
+##############################################################################################
+################################################################################################
+class CustomUserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CustomUser
+        fields = ('username', 'email', 'first_name', 'last_name', 'age', 'profile_data')  
+
+    profile_data = serializers.SerializerMethodField()
+
+    def get_profile_data(self, obj: CustomUser) -> dict:
+        try:
+            profile = obj.userprofile
+            return UserProfileSerializer(profile).data
+        except UserProfile.DoesNotExist:
+            return None 
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
@@ -31,79 +71,21 @@ class UserSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         user = User.objects.create_user(**validated_data)
         return user
+    
+
+
+from rest_framework import serializers
+from allauth.socialaccount.models import SocialAccount
+
+class SocialAccountSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = SocialAccount
+        fields = ('user', 'provider', 'uid', 'extra_data', 'last_login')
+
+
 
 
 class LoginSerializer(serializers.Serializer):
     username = serializers.CharField()
     password = serializers.CharField()
 
-class CustomLogoutSerializer(serializers.Serializer):
-    pass
-
-
-
-class ChurchSerializer(serializers.ModelSerializer):
-    # Other fields of the serializer
-
-    class Meta:
-        model = Church
-        fields = ['name', 'email']
-        #exclude = []  # Remove 'user' from the exclude option
-        extra_kwargs = {
-            'user': {'read_only': True}
-        }
-
-    def create(self, validated_data):
-        if not self.context['request'].user.is_authenticated:
-            raise serializers.ValidationError('User must be authenticated.')
-
-        user = self.context['request'].user
-        if not isinstance(user, User):
-            raise serializers.ValidationError('User must be an instance of CustomUser.')
-
-        validated_data['user'] = user
-        church = Church.objects.create(**validated_data)
-        return church
-
-
-class PrayerResponseSerializer(serializers.Serializer):
-    message = serializers.CharField()
-
-
-
-
-# class ChurchSerializer(serializers.ModelSerializer):
-#     # user = serializers.ReadOnlyField(source='user.username')
-#     class Meta:
-#         model = Church
-#         fields = '__all__'
-#         # exclude = ['user']
-#         # fields = ['name', 'email']
-
-#     def create(self, validated_data):
-#         # Retrieve the authenticated user from the request
-#         user = self.context['request'].user
-
-#         # Create the church object without the 'user' field
-#         church = Church.objects.create(**validated_data)
-
-#         # Assign the user to the 'user' field of the church object
-#         church.user = user
-#         church.save()
-
-#         return church
-
-#     # def create(self, validated_data):
-#     #     validated_data['user'] = self.context['request'].user
-#     #     return super().create(validated_data)
-
-
-class CommunitySerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Community
-        fields = ['name']
-
-class TeamSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Team
-        fields = ['name']

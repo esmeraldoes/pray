@@ -18,8 +18,13 @@ urlpatterns = [
     path('api/schema/', SpectacularAPIView.as_view(), name='schema'),
     path('', SpectacularSwaggerView.as_view(url_name='schema'), name='swagger-ui'),
     path('api/', include('bibleApp.urls')),
+    path('api2/', include('dbibles.urls')),
+    # path('api3/', include('user_management.urls')),
+    path('bible/', include('mygrpcapp.urls')),
+    path('community/', include('community.urls')),
 
 ]
+
 
 # Add static files serving for development
 from django.conf import settings

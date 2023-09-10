@@ -1,0 +1,79 @@
+# from django.contrib import admin
+# from django.urls import path
+
+# from bible_service import views
+
+
+# urlpatterns = [
+#     path('admin/', admin.site.urls),
+#     path('bible_versions/', views.get_bible_versions),
+#     path('books_in_version/', views.get_books_in_version),
+#     path('chapters_in_book/', views.get_chapters_in_book),
+#     path('verse_in_chapter/', views.get_verse_in_chapter),
+#     path('compare_verses/', views.compare_verses),
+# ]
+
+
+# def get_bible_versions(request):
+#     """
+#     Get a list of all the Bible versions in the database.
+#     """
+#     versions = BibleVersion.objects.all()
+#     return versions
+
+
+# def get_books_in_version(request, version_name):
+#     """
+#     Get a list of all the books in the specified Bible version.
+#     """
+#     try:
+#         version = BibleVersion.objects.get(name=version_name)
+#         books = version.books.all()
+#         return books
+#     except BibleVersion.DoesNotExist:
+#         return []
+
+
+# def get_chapters_in_book(request, version_name, book_name):
+#     """
+#     Get a list of all the chapters in the specified book of the specified Bible version.
+#     """
+#     try:
+#         version = BibleVersion.objects.get(name=version_name)
+#         book = version.books.get(name=book_name)
+#         chapters = book.chapters.all()
+#         return chapters
+#     except (BibleVersion.DoesNotExist, BibleBook.DoesNotExist):
+#         return []
+
+
+# def get_verse_in_chapter(request, version_name, book_name, chapter_number, verse_number):
+#     """
+#     Get the specified verse in the specified chapter of the specified Bible version.
+#     """
+#     try:
+#         version = BibleVersion.objects.get(name=version_name)
+#         book = version.books.get(name=book_name)
+#         chapter = book.chapters.get(number=chapter_number)
+#         verse = chapter.verses.get(number=verse_number)
+#         return verse
+#     except (BibleVersion.DoesNotExist, BibleBook.DoesNotExist, BibleChapter.DoesNotExist, BibleVerse.DoesNotExist):
+#         return None
+
+
+# def compare_verses(request, versions, book_name, chapter_number, verse_number):
+#     """
+#     Get a list of verses from the specified versions for the specified verse in the specified chapter.
+#     """
+#     verses = []
+#     for version_name in versions:
+#         try:
+#             version = BibleVersion.objects.get(name=version_name)
+#             book = version.books.get(name=book_name)
+#             chapter = book.chapters.get(number=chapter_number)
+#             verse = chapter.verses.get(number=verse_number)
+#             verses.append(verse)
+#         except (BibleVersion.DoesNotExist, BibleBook.DoesNotExist, BibleChapter.DoesNotExist, BibleVerse.DoesNotExist):
+#             pass
+#     return verses
+

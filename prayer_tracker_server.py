@@ -84,7 +84,8 @@ class PrayerTrackerServicer(prayer_tracker_pb2_grpc.PrayerTrackerServiceServicer
 def serve():
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
     prayer_tracker_pb2_grpc.add_PrayerTrackerServiceServicer_to_server(PrayerTrackerServicer(), server)
-    server.add_insecure_port('0.0.0.0:8001')
+    server.add_insecure_port('0.0.0.0:8002')
+    # server.add_insecure_port('127.0.0.1:50051')
     server.start()
     server.wait_for_termination()
 

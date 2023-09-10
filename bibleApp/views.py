@@ -1,70 +1,3 @@
-# # authentication/views.py
-
-# from django.contrib.auth import get_user_model
-# from rest_framework import generics, status
-# from rest_framework.response import Response
-# from allauth.socialaccount.providers.facebook.views import FacebookOAuth2Adapter
-# from allauth.socialaccount.providers.google.views import GoogleOAuth2Adapter
-# from .serializers import UserSerializer, LoginSerializer
-# from rest_auth.registration.views import SocialLoginView
-
-# from rest_framework_swagger.views import get_swagger_view
-
-# User = get_user_model()
-# schema_view = get_swagger_view(title='API Documentation')
-
-
-# class RegisterView(generics.CreateAPIView):
-#     queryset = User.objects.all()
-#     serializer_class = UserSerializer
-
-
-# class LoginView(generics.CreateAPIView):
-#     queryset = User.objects.all()
-#     serializer_class = LoginSerializer
-
-
-# class LogoutView(generics.GenericAPIView):
-#     def post(self, request, *args, **kwargs):
-#         # Perform any logout logic here
-#         return Response(status=status.HTTP_200_OK)
-
-
-# class FacebookLogin(SocialLoginView):
-#     adapter_class = FacebookOAuth2Adapter
-
-
-# class GoogleLogin(SocialLoginView):
-#     adapter_class = GoogleOAuth2Adapter
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-# views.py
-
 
 from django.contrib.auth import get_user_model
 from rest_framework import generics, status
@@ -77,26 +10,16 @@ from rest_framework.response import Response
 from .serializers import UserSerializer
 
 from rest_framework import generics, permissions
-from .models import Church, Community, Team
-from .serializers import ChurchSerializer, CommunitySerializer, TeamSerializer
-
-from django.contrib.auth.models import AnonymousUser
-
-from allauth.socialaccount.providers.google.views import GoogleOAuth2Adapter
-from allauth.socialaccount.providers.facebook.views import FacebookOAuth2Adapter
-
-
-# from rest_framework_simplejwt.views import TokenLogoutView
-
 
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.authtoken.models import Token
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 
-from rest_auth.registration.views import SocialLoginView
 from .serializers import CustomLoginSerializer
 from rest_framework.authentication import TokenAuthentication
+
+
 
 class RegisterView(generics.CreateAPIView):
     serializer_class = UserSerializer
@@ -108,7 +31,7 @@ class RegisterView(generics.CreateAPIView):
 
 
 class LoginView(ObtainAuthToken):
-    serializer_class = CustomLoginSerializer  # Set the serializer class
+    serializer_class = CustomLoginSerializer 
     permission_classes = [AllowAny]
 
     def post(self, request, *args, **kwargs):
@@ -119,16 +42,6 @@ class LoginView(ObtainAuthToken):
         return Response({'token': token.key})
 
 
-
-
-
-
-# class LoginView(generics.GenericAPIView):
-#     permission_classes = [permissions.AllowAny]
-
-#     def post(self, request, *args, **kwargs):
-#         # Implement your login logic here
-#         return Response("Login successful")
 
 
 from rest_framework import serializers
@@ -151,113 +64,139 @@ class LogoutView(ObtainAuthToken):
         serializer.is_valid(raise_exception=True)
         serializer.logout()
         return Response(status=status.HTTP_200_OK)
+    
 
-# class LogoutView(generics.GenericAPIView):
+
+
+
+
+
+# views.py
+
+from rest_framework.generics import RetrieveAPIView
+from rest_framework.authentication import TokenAuthentication
+from rest_framework.permissions import IsAuthenticated
+from .permissions import IsSocialAccountOwner
+from allauth.socialaccount.models import SocialAccount
+from .serializers import SocialAccountSerializer
+
+class SocialAccountView(RetrieveAPIView):
+    authentication_classes = [TokenAuthentication]  # Add the desired authentication classes
+    permission_classes = [IsAuthenticated, IsSocialAccountOwner]  # Add your custom permission class
+
+    serializer_class = SocialAccountSerializer
+
+    def get_object(self):
+        user = self.request.user
+        try:
+            social_account = SocialAccount.objects.get(user=user)
+            return social_account
+        except SocialAccount.DoesNotExist:
+            return None
+
+
+from allauth.socialaccount.providers.oauth2.client import OAuth2Client
+from allauth.socialaccount.providers.facebook.views import FacebookOAuth2Adapter
+
+from allauth.socialaccount.views import SocialLogin
+
+class FacebookLogin(SocialLogin):
+    adapter_class = FacebookOAuth2Adapter
+    client_class = OAuth2Client
+    callback_url = 'http://localhost:8000'  # Replace with your actual callback URL
+
+
+from allauth.socialaccount.providers.oauth2.client import OAuth2Client
+from allauth.socialaccount.providers.google.views import GoogleOAuth2Adapter
+
+
+class GoogleLogin(SocialLogin):
+    adapter_class = GoogleOAuth2Adapter
+    client_class = OAuth2Client
+
+
+
+
+
+
+
+from rest_framework import status
+from rest_framework.response import Response
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import IsAuthenticated
+from allauth.account.models import EmailAddress  # Import EmailAddress model
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def get_user_info(request):
+    # Get the authenticated user
+    user = request.user
+    
+    # Fetch additional user information
+    try:
+        email_address = EmailAddress.objects.get(user=user, primary=True)
+        user_info = {
+            'username': user.username,
+            'email': email_address.email,
+            'first_name': user.first_name,
+            'last_name': user.last_name,
+            # Add other fields you need
+        }
+        return Response(user_info, status=status.HTTP_200_OK)
+    except EmailAddress.DoesNotExist:
+        return Response({'error': 'Email address not found.'}, status=status.HTTP_404_NOT_FOUND)
+
+
+
+
+
+#############hereererere
+
+from rest_framework import generics, permissions
+from .models import UserProfile
+from .serializers import UserProfileSerializer
+from .permissions import IsOwnerOrReadOnly
+
+class UserProfileDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = UserProfile.objects.all()
+    serializer_class = UserProfileSerializer
+    permission_classes = [permissions.IsAuthenticated, IsOwnerOrReadOnly]
+
+
+from rest_framework import generics, status, permissions
+from rest_framework.response import Response
+from django.contrib.auth import login, logout
+from allauth.account.models import EmailConfirmation
+from .models import CustomUser
+from .serializers import CustomUserSerializer
+
+class UserRegistrationView(generics.CreateAPIView):
+    queryset = CustomUser.objects.all()
+    serializer_class = CustomUserSerializer
+    permission_classes = [permissions.AllowAny]
+
+    def perform_create(self, serializer):
+        user = serializer.save()
+        email_address = user.emailaddress_set.get(email=user.email)
+        email_address.verified = True
+        email_address.primary = True
+        email_address.save()
+
+
+# class UserLogoutView(APIView):
 #     permission_classes = [permissions.IsAuthenticated]
 
-#     def post(self, request, *args, **kwargs):
-#         # Implement your logout logic here
-#         Token.objects.filter(user=request.user).delete()
+#     def post(self, request):
+#         logout(request)
+#         return Response({'message': 'User logged out successfully.'}, status=status.HTTP_200_OK)
 
-#         # Perform the logout by clearing the session
-#         self.logout(request)
+class UserProfileView(generics.RetrieveUpdateAPIView):
+    queryset = CustomUser.objects.all()
+    serializer_class = CustomUserSerializer
+    permission_classes = [permissions.IsAuthenticated]
 
-#         return Response("Logout successful")
+    def get_object(self):
+        return self.request.user
     
-#     def logout(self, request):
-#         # Clear the session data and log out the user
-#         request.session.flush()
-#         request.user = AnonymousUser()
-#         request.auth = None
-        
-       
-
-class FacebookLogin(SocialLoginView):
-    adapter_class = FacebookOAuth2Adapter
-
-class GoogleLogin(SocialLoginView):
-    adapter_class = GoogleOAuth2Adapter
 
 
-class ChurchCreateView(generics.CreateAPIView):
-    queryset = Church.objects.all()
-    serializer_class = ChurchSerializer
-    permission_classes = [AllowAny]
-    #permission_classes = [permissions.IsAuthenticated]
-    # authentication_classes = [TokenAuthentication]
-
-    def perform_create(self, serializer):
-        serializer.save(user=self.request.user)
-
-
-class CommunityCreateView(generics.CreateAPIView):
-    queryset = Community.objects.all()
-    serializer_class = CommunitySerializer
-    permission_classes = [permissions.IsAuthenticated]
-    authentication_classes = [TokenAuthentication]
-
-    def perform_create(self, serializer):
-        serializer.save(user=self.request.user)
-
-class TeamCreateView(generics.CreateAPIView):
-    queryset = Team.objects.all()
-    serializer_class = TeamSerializer
-    permission_classes = [permissions.IsAuthenticated]
-    authentication_classes = [TokenAuthentication]
-
-    def perform_create(self, serializer):
-        serializer.save(user=self.request.user)
-
-
-
-from rest_framework.decorators import api_view
-from rest_framework.response import Response
-from grpc import insecure_channel
-import prayer_tracker_pb2
-import prayer_tracker_pb2_grpc
-
-
-
-
-
-
-
-from rest_framework.views import APIView
-from rest_framework.response import Response
-from prayer_tracker_pb2 import StartPrayerRequest, PrayerRequest, EndPrayerRequest
-from prayer_tracker_pb2_grpc import PrayerTrackerServiceStub
-import grpc
-
-class StartPrayerView(APIView):
-    def post(self, request):
-        user_id = request.POST.get('user_id')
-
-        # user_id = request.data['user_id']
-        # user_id = request.data.get('user_id')
-
-        # channel = grpc.insecure_channel('localhost:80001')
-        channel = grpc.insecure_channel('prayerapp1.onrender.com:8001')
-        stub = PrayerTrackerServiceStub(channel)
-        response = stub.StartPrayer(StartPrayerRequest(user_id=user_id))
-        return Response({'message': response.message})
-
-class EndPrayerView(APIView):
-    def post(self, request):
-        user_id = request.POST.get('user_id')
-        # user_id = request.data['user_id']
-        channel = grpc.insecure_channel('prayerapp1.onrender.com:8001')
-        # channel = grpc.insecure_channel('localhost:80001')
-        stub = PrayerTrackerServiceStub(channel)
-        response = stub.EndPrayer(EndPrayerRequest(user_id=user_id))
-        return Response({'message': response.message})
-
-class PrayerUpdatesView(APIView):
-    def post(self, request):
-        user_id = request.POST.get('user_id')
-        # user_id = request.data['user_id']
-        channel = grpc.insecure_channel('prayerapp1.onrender.com:8001')
-        # channel = grpc.insecure_channel('localhost:80001')
-        stub = PrayerTrackerServiceStub(channel)
-        prayer_request = PrayerRequest(user_id=user_id)
-        prayer_updates = stub.PrayerUpdates(prayer_request)
-        return Response(prayer_updates)

@@ -25,7 +25,11 @@ SECRET_KEY = 'django-insecure-)z9(n(yj8j&)&ke43^11ob91=b)ex$*fkk%*a)#b_g1a_bqliz
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["https://prayerapp1.onrender.com",'prayerapp1.onrender.com', '127.0.0.1', '*']
+
+# ALLOWED_HOSTS = ['21c1-105-113-59-127.ngrok-free.app', '127.0.0.1', '*','localhost:8000']
+ALLOWED_HOSTS = ["https://prayerapp1.onrender.com", 'http://127.0.0.1:8000']
+# ALLOWED_HOSTS = ('*',)
+
 
 
 # Application definition
@@ -38,27 +42,41 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'bibleApp',
+    'dbibles',
+    'prayerrum',
+    'mygrpcapp',
+    'user_management',
+    'community',
+    'corsheaders',
+    'django_extensions',
 
     'rest_auth',
     'social_django',
     'drf_spectacular',
     'django_filters',
+    'django_elasticsearch_dsl',
     'rest_framework.authtoken',
+    # 'django_grpc',
+    'grpc_django',
+    
+    
 
     'rest_framework',
-    'django.contrib.sites',  # Required by Django-Allauth
+    'django.contrib.sites',  
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
-    'allauth.socialaccount.providers.facebook',  # Add this line for Facebook
-    'allauth.socialaccount.providers.google',  # Add this line for Google
+    'allauth.socialaccount.providers.facebook',  
+    'allauth.socialaccount.providers.google',
 
 ]
+
 
 MIDDLEWARE = [
     'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -68,6 +86,24 @@ MIDDLEWARE = [
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 ROOT_URLCONF = 'backend.urls'
+
+CORS_ALLOW_ALL_ORIGINS = True
+
+
+
+CSRF_TRUSTED_ORIGINS = [
+    "https://prayerapp1.onrender.com",
+]
+# CORS_ALLOW_ALL_ORIGINS = False
+
+
+CORS_ALLOWED_ORIGINS = [    
+    "https://prayerapp1.onrender.com",
+    "http://localhost:8000",
+    "http://127.0.0.1:8000",
+    "http://localhost:8000",
+] + ALLOWED_HOSTS
+
 
 AUTH_USER_MODEL = 'bibleApp.CustomUser'
 TEMPLATES = [
@@ -102,29 +138,55 @@ DATABASES = {
 
 
 AUTHENTICATION_BACKENDS = [
+    
     'django.contrib.auth.backends.ModelBackend',
     'allauth.account.auth_backends.AuthenticationBackend',
     'social_core.backends.facebook.FacebookOAuth2',
     'social_core.backends.google.GoogleOAuth2',
 ]
-SITE_ID = 1 
+SITE_ID = 2
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework.authentication.TokenAuthentication',  # Example: Token authentication
-        'rest_framework.authentication.SessionAuthentication',  # Example: Session authentication
+        'rest_framework.authentication.TokenAuthentication',  
+        'rest_framework.authentication.SessionAuthentication', 
     ),
     'DEFAULT_PERMISSION_CLASSES': (
-        'rest_framework.permissions.IsAuthenticated',
+        'rest_framework.permissions.AllowAny',
+        # 'rest_framework.permissions.IsAuthenticated',
     ),
     'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+    # 'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
+    # 'PAGE_SIZE': 25,
     
 }
 
+ELASTICSEARCH_DSL = {
+    'default': {
+        'hosts': 'localhost:9200'
+    },
+}
 
+# AUTHENTICATION_METHOD = 'email'
+# ACCOUNT_EMAIL_VERIFICATION = 'mandatory'  # 'mandatory' or 'optional'
+# ACCOUNT_UNIQUE_EMAIL = True
+# ACCOUNT_UNIQUE_USERNAME = False
+# SOCIALACCOUNT_QUERY_EMAIL = True
+# SOCIALACCOUNT_AUTO_SIGNUP = False  # Users must confirm their email after social signup
 
+# # Email settings
+# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+# EMAIL_HOST = 'your-smtp-host.com'
+# EMAIL_PORT = 587
+# EMAIL_USE_TLS = True
+# EMAIL_HOST_USER = 'your-email@example.com'
+# EMAIL_HOST_PASSWORD = 'your-email-password'
+# DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 # Configure Django Allauth settings
 SOCIALACCOUNT_PROVIDERS = {
     'facebook': {
+        'METHOD': 'oauth2',
+        'SCOPE': ['email', 'public_profile'],
+        'AUTH_PARAMS': {'auth_type': 'reauthenticate'},
         'APP': {
             'client_id': '1450115019174104',
             'secret': '0ed8e65c4e050522b27e684b20653c4c',
@@ -132,13 +194,23 @@ SOCIALACCOUNT_PROVIDERS = {
         }
     },
     'google': {
+        'SCOPE': ['profile', 'email'],
         'APP': {
-            'client_id': '802944885729-5p6m0ku0hgmbirpgguai9s794lppqgui.apps.googleusercontent.com',
-            'secret': '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',
+            'client_id': '942851459790-okvqvkft4cnmjode76k5e8ch8vbc20ln.apps.googleusercontent.com',
+            'secret': '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',
             'key': '',
         }
     },
+    # 'google': {
+    #     'SCOPE': ['profile', 'email'],
+    #     'APP': {
+    #         'client_id': '802944885729-5p6m0ku0hgmbirpgguai9s794lppqgui.apps.googleusercontent.com',
+    #         'secret': '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',
+    #         'key': '',
+    #     }
+    # },
 }
+
 
 import threading
 from prayer_tracker_server import serve
@@ -159,13 +231,23 @@ REST_AUTH_SERIALIZERS = {
 LOGIN_URL = 'rest_framework:login'
 LOGOUT_URL = 'rest_framework:logout'
 
-LOGIN_REDIRECT_URL = '/'
+# LOGIN_REDIRECT_URL = '/'
+
+LOGIN_REDIRECT_URL = 'https://prayerapp1.onrender.com/api/profile/'
+
+# LOGIN_REDIRECT_URL = 'http://127.0.0.1:8000/api/login'
+
+LOGOUT_REDIRECT_URL = 'https://prayerapp1.onrender.com/accounts/login'
 
 SPECTACULAR_SETTINGS = {
     'TITLE': 'REGIMEN ENDPOINT',
     'DESCRIPTION': 'Endpoints for the prayer app',
     'VERSION': '1.0.0',
 }
+#### ADMIN CREDENTIALS
+#username: david
+#password: balm
+#mail: davidbalm@gmail.com
 
 
 SWAGGER_SETTINGS = {
@@ -193,8 +275,6 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
-
-
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
 
