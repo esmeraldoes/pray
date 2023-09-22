@@ -25,10 +25,7 @@ SECRET_KEY = 'django-insecure-)z9(n(yj8j&)&ke43^11ob91=b)ex$*fkk%*a)#b_g1a_bqliz
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-
-# ALLOWED_HOSTS = ['21c1-105-113-59-127.ngrok-free.app', '127.0.0.1', '*','localhost:8000']
-ALLOWED_HOSTS = ["https://prayerapp1.onrender.com", 'http://127.0.0.1:8000']
-# ALLOWED_HOSTS = ('*',)
+ALLOWED_HOSTS = ['*']
 
 
 
@@ -41,12 +38,11 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    # 'bibleApp.apps.BibleappConfig',
     'bibleApp',
-    'dbibles',
-    'prayerrum',
     'mygrpcapp',
-    'user_management',
-    'community',
+    'communityapp',
+    'prayertrack',
     'corsheaders',
     'django_extensions',
 
@@ -72,6 +68,25 @@ INSTALLED_APPS = [
 ]
 
 
+GRPC_SETTINGS = {
+    "DEFAULT": {
+        "RCP_SERVER": "C:\\Users\\HP\\Desktop\\shadow\\mygrpcapp\\bible_service.py",  
+    },
+}
+
+
+GRPC_MAX_WORKERS = 10
+# GRPC_SERVER_ADDRESS = '127.0.0.1'
+GRPC_SERVER_ADDRESS = '13.42.54.105'
+
+
+GRPC_ENABLED = True
+GRPCSERVER = {
+    'servicers': ['mygrpcapp.bible_service.BibleServiceServicer'],
+    'async': False,
+}
+
+
 MIDDLEWARE = [
     'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.middleware.security.SecurityMiddleware',
@@ -87,22 +102,25 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 ROOT_URLCONF = 'backend.urls'
 
+
 CORS_ALLOW_ALL_ORIGINS = True
 
-
-
 CSRF_TRUSTED_ORIGINS = [
-    "https://prayerapp1.onrender.com",
+    'http://13.42.54.105',
+    'http://localhost:8000',
+   
 ]
-# CORS_ALLOW_ALL_ORIGINS = False
 
 
-CORS_ALLOWED_ORIGINS = [    
-    "https://prayerapp1.onrender.com",
-    "http://localhost:8000",
-    "http://127.0.0.1:8000",
-    "http://localhost:8000",
-] + ALLOWED_HOSTS
+
+
+
+# CORS_ALLOWED_ORIGINS = [    
+#     "https://prayerapp1.onrender.com",
+#     "http://localhost:8000",
+#     "http://127.0.0.1:8000",
+#     "http://localhost:8000",
+# ] + ALLOWED_HOSTS
 
 
 AUTH_USER_MODEL = 'bibleApp.CustomUser'
@@ -144,7 +162,7 @@ AUTHENTICATION_BACKENDS = [
     'social_core.backends.facebook.FacebookOAuth2',
     'social_core.backends.google.GoogleOAuth2',
 ]
-SITE_ID = 2
+SITE_ID = 3
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework.authentication.TokenAuthentication',  
@@ -211,18 +229,6 @@ SOCIALACCOUNT_PROVIDERS = {
     # },
 }
 
-
-import threading
-from prayer_tracker_server import serve
-
-def start_grpc_server():
-    server_thread = threading.Thread(target=serve)
-    server_thread.start()
-
-# Start the gRPC server when the Django application starts
-start_grpc_server()
-
-# Configure Django Rest Framework settings
 REST_AUTH_SERIALIZERS = {
     'LOGIN_SERIALIZER': 'bibleApp.serializers.CustomLoginSerializer',
 }
@@ -233,11 +239,16 @@ LOGOUT_URL = 'rest_framework:logout'
 
 # LOGIN_REDIRECT_URL = '/'
 
-LOGIN_REDIRECT_URL = 'https://prayerapp1.onrender.com/api/profile/'
+# LOGIN_REDIRECT_URL = '13.42.54.105:8000/api/profile/'
+# # LOGIN_REDIRECT_URL = 'http://127.0.0.1:8000/api/profile/'
 
-# LOGIN_REDIRECT_URL = 'http://127.0.0.1:8000/api/login'
+# # LOGIN_REDIRECT_URL = 'http://127.0.0.1:8000/api/login'
 
-LOGOUT_REDIRECT_URL = 'https://prayerapp1.onrender.com/accounts/login'
+# LOGOUT_REDIRECT_URL = 'http://127.0.0.1:8000/accounts/login'
+
+LOGIN_REDIRECT_URL = 'http://13.42.54.105:8000/api/profile/'
+LOGOUT_REDIRECT_URL = 'http://13.42.54.105:8000/accounts/login'
+
 
 SPECTACULAR_SETTINGS = {
     'TITLE': 'REGIMEN ENDPOINT',
@@ -250,12 +261,19 @@ SPECTACULAR_SETTINGS = {
 #mail: davidbalm@gmail.com
 
 
+# Username: admin1
+# mail: admin1@gmail.com
+# Password: oneadmin90
+
+
+
 SWAGGER_SETTINGS = {
     
     # 'DEFAULT_API_URL': 'http://127.0.0.1/api/swagger/',
-    'DEFAULT_API_URL': 'https://prayerapp1.onrender.com/api/swagger/',
+    'DEFAULT_API_URL': 'http://13.42.54.105/api/swagger/',
+    # 'DEFAULT_API_URL': 'https://prayerapp1.onrender.com/api/swagger/',
     'DEFAULT_VALIDATOR_CLASS': None,
-    # Adjust other settings as needed
+   
 }
 
 # Password validation
@@ -275,6 +293,8 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
+
+
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
 

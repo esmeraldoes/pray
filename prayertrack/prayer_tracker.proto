@@ -1,0 +1,55 @@
+syntax = "proto3";
+
+package prayertracker;
+
+// Define the service
+service PrayerTracker {
+  rpc StartPrayer (StartPrayerRequest) returns (StartPrayerResponse);
+  rpc EndPrayer (EndPrayerRequest) returns (EndPrayerResponse);
+  rpc PrayerUpdates (PrayerUpdatesRequest) returns (stream PrayerUpdateResponse);
+  rpc PrayerDuration (PrayerDurationRequest) returns (PrayerDurationResponse);
+  rpc VoiceDuration (VoiceDurationRequest) returns (VoiceDurationResponse);
+}
+
+// Define the request and response message types
+message StartPrayerRequest {
+  int32 user_id = 1;
+}
+
+message StartPrayerResponse {
+  string message = 1;
+}
+
+message EndPrayerRequest {
+  int32 user_id = 1;
+}
+
+message EndPrayerResponse {
+  string message = 1;
+}
+
+message PrayerUpdatesRequest {
+  int32 user_id = 1;
+}
+
+message PrayerUpdateResponse {
+  int32 prayer_duration = 1;
+  int32 voice_duration = 2;
+  bool voice_detected = 3;
+}
+
+message PrayerDurationRequest {
+  int32 user_id = 1;
+}
+
+message PrayerDurationResponse {
+  int32 duration = 1;
+}
+
+message VoiceDurationRequest {
+  int32 user_id = 1;
+}
+
+message VoiceDurationResponse {
+  int32 duration = 1;
+}

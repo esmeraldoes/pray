@@ -47,7 +47,6 @@ class BibleVerseSerializer(serializers.Serializer):
         """
         data = super().to_representation(instance)
         
-        # Check if the "number" field is present in the instance
         if 'number' in instance:
             data['number'] = instance['number']
         

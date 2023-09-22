@@ -14,14 +14,12 @@ urlpatterns = [
     path('rest-auth/', include('rest_auth.urls')),
     path('rest-auth/registration/', include('rest_auth.registration.urls')),
     path('api-auth/', include('rest_framework.urls')),
-
     path('api/schema/', SpectacularAPIView.as_view(), name='schema'),
     path('', SpectacularSwaggerView.as_view(url_name='schema'), name='swagger-ui'),
-    path('api/', include('bibleApp.urls')),
-    path('api2/', include('dbibles.urls')),
-    # path('api3/', include('user_management.urls')),
+    path('usermanagement/', include('bibleApp.urls')),
     path('bible/', include('mygrpcapp.urls')),
-    path('community/', include('community.urls')),
+    path('prayertracker/', include('prayertrack.urls')),
+    path('communityapps/', include('communityapp.urls')),
 
 ]
 

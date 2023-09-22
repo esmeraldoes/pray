@@ -68,11 +68,6 @@ class LogoutView(ObtainAuthToken):
 
 
 
-
-
-
-# views.py
-
 from rest_framework.generics import RetrieveAPIView
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
@@ -81,9 +76,8 @@ from allauth.socialaccount.models import SocialAccount
 from .serializers import SocialAccountSerializer
 
 class SocialAccountView(RetrieveAPIView):
-    authentication_classes = [TokenAuthentication]  # Add the desired authentication classes
-    permission_classes = [IsAuthenticated, IsSocialAccountOwner]  # Add your custom permission class
-
+    authentication_classes = [TokenAuthentication] 
+    permission_classes = [IsAuthenticated, IsSocialAccountOwner]  
     serializer_class = SocialAccountSerializer
 
     def get_object(self):
@@ -103,7 +97,7 @@ from allauth.socialaccount.views import SocialLogin
 class FacebookLogin(SocialLogin):
     adapter_class = FacebookOAuth2Adapter
     client_class = OAuth2Client
-    callback_url = 'http://localhost:8000'  # Replace with your actual callback URL
+    callback_url = 'http://localhost:8000'  
 
 
 from allauth.socialaccount.providers.oauth2.client import OAuth2Client
@@ -129,10 +123,9 @@ from allauth.account.models import EmailAddress  # Import EmailAddress model
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def get_user_info(request):
-    # Get the authenticated user
+   
     user = request.user
-    
-    # Fetch additional user information
+  
     try:
         email_address = EmailAddress.objects.get(user=user, primary=True)
         user_info = {
@@ -140,7 +133,7 @@ def get_user_info(request):
             'email': email_address.email,
             'first_name': user.first_name,
             'last_name': user.last_name,
-            # Add other fields you need
+           
         }
         return Response(user_info, status=status.HTTP_200_OK)
     except EmailAddress.DoesNotExist:
