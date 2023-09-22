@@ -211,22 +211,22 @@ SOCIALACCOUNT_PROVIDERS = {
             'key': '',
         }
     },
-    'google': {
-        'SCOPE': ['profile', 'email'],
-        'APP': {
-            'client_id': '942851459790-okvqvkft4cnmjode76k5e8ch8vbc20ln.apps.googleusercontent.com',
-            'secret': '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',
-            'key': '',
-        }
-    },
     # 'google': {
     #     'SCOPE': ['profile', 'email'],
     #     'APP': {
-    #         'client_id': '802944885729-5p6m0ku0hgmbirpgguai9s794lppqgui.apps.googleusercontent.com',
-    #         'secret': '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',
+    #         'client_id': '942851459790-okvqvkft4cnmjode76k5e8ch8vbc20ln.apps.googleusercontent.com',
+    #         'secret': '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',
     #         'key': '',
     #     }
     # },
+    'google': {
+        'SCOPE': ['profile', 'email'],
+        'APP': {
+            'client_id': '802944885729-5p6m0ku0hgmbirpgguai9s794lppqgui.apps.googleusercontent.com',
+            'secret': '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',
+            'key': '',
+        }
+    },
 }
 
 REST_AUTH_SERIALIZERS = {
