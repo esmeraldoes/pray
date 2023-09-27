@@ -77,7 +77,7 @@ GRPC_SETTINGS = {
 
 GRPC_MAX_WORKERS = 10
 # GRPC_SERVER_ADDRESS = '127.0.0.1'
-GRPC_SERVER_ADDRESS = '13.42.54.105'
+GRPC_SERVER_ADDRESS = '18.170.215.183'
 
 
 GRPC_ENABLED = True
@@ -106,7 +106,7 @@ ROOT_URLCONF = 'backend.urls'
 CORS_ALLOW_ALL_ORIGINS = True
 
 CSRF_TRUSTED_ORIGINS = [
-    'http://13.42.54.105',
+    'http://18.170.215.183',
     'http://localhost:8000',
    
 ]
@@ -239,15 +239,15 @@ LOGOUT_URL = 'rest_framework:logout'
 
 # LOGIN_REDIRECT_URL = '/'
 
-# LOGIN_REDIRECT_URL = '13.42.54.105:8000/api/profile/'
+# LOGIN_REDIRECT_URL = '18.170.215.183:8000/api/profile/'
 # # LOGIN_REDIRECT_URL = 'http://127.0.0.1:8000/api/profile/'
 
 # # LOGIN_REDIRECT_URL = 'http://127.0.0.1:8000/api/login'
 
 # LOGOUT_REDIRECT_URL = 'http://127.0.0.1:8000/accounts/login'
 
-LOGIN_REDIRECT_URL = 'http://13.42.54.105:8000/api/profile/'
-LOGOUT_REDIRECT_URL = 'http://13.42.54.105:8000/accounts/login'
+LOGIN_REDIRECT_URL = 'https://18.170.215.183:8000/api/profile/'
+LOGOUT_REDIRECT_URL = 'https://18.170.215.183:8000/accounts/login'
 
 
 SPECTACULAR_SETTINGS = {
@@ -270,7 +270,7 @@ SPECTACULAR_SETTINGS = {
 SWAGGER_SETTINGS = {
     
     # 'DEFAULT_API_URL': 'http://127.0.0.1/api/swagger/',
-    'DEFAULT_API_URL': 'http://13.42.54.105/api/swagger/',
+    'DEFAULT_API_URL': 'http://18.170.215.183/api/swagger/',
     # 'DEFAULT_API_URL': 'https://prayerapp1.onrender.com/api/swagger/',
     'DEFAULT_VALIDATOR_CLASS': None,
    
