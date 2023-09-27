@@ -27,7 +27,7 @@ from mygrpcapp import bible_pb2 as bible_service_pb2
 from mygrpcapp import bible_pb2_grpc as bible_service_pb2_grpc
 
 # server_address = '127.0.0.1:50051' 
-server_address = '18.170.215.183:50051' 
+server_address = '18.132.235.141:50051' 
 
 
 
