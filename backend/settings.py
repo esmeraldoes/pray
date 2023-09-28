@@ -68,11 +68,11 @@ INSTALLED_APPS = [
 ]
 
 
-GRPC_SETTINGS = {
-    "DEFAULT": {
-        "RCP_SERVER": "C:\\Users\\HP\\Desktop\\shadow\\mygrpcapp\\bible_service.py",  
-    },
-}
+# GRPC_SETTINGS = {
+#     "DEFAULT": {
+#         "RCP_SERVER": "C:\\Users\\HP\\Desktop\\shadow\\mygrpcapp\\bible_service.py",  
+#     },
+# }
 
 
 GRPC_MAX_WORKERS = 10
