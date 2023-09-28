@@ -108,9 +108,8 @@ CORS_ALLOW_ALL_ORIGINS = True
 CSRF_TRUSTED_ORIGINS = [
     'https://ec2-18-132-235-141.eu-west-2.compute.amazonaws.com',
     'http://18.132.235.141',
+    'https://18.132.235.141',
     'http://localhost:8000',
-    '18.132.235.141',
-   
 ]
 
 
