@@ -77,7 +77,7 @@ GRPC_SETTINGS = {
 
 GRPC_MAX_WORKERS = 10
 # GRPC_SERVER_ADDRESS = '127.0.0.1'
-GRPC_SERVER_ADDRESS = '18.132.235.141'
+GRPC_SERVER_ADDRESS = 'https://ec2-18-132-235-141.eu-west-2.compute.amazonaws.com'
 
 
 GRPC_ENABLED = True
@@ -106,6 +106,7 @@ ROOT_URLCONF = 'backend.urls'
 CORS_ALLOW_ALL_ORIGINS = True
 
 CSRF_TRUSTED_ORIGINS = [
+    'https://ec2-18-132-235-141.eu-west-2.compute.amazonaws.com',
     'http://18.132.235.141',
     'http://localhost:8000',
     '18.132.235.141',
@@ -212,21 +213,21 @@ SOCIALACCOUNT_PROVIDERS = {
             'key': '',
         }
     },
-    # 'google': {
-    #     'SCOPE': ['profile', 'email'],
-    #     'APP': {
-    #         'client_id': '942851459790-okvqvkft4cnmjode76k5e8ch8vbc20ln.apps.googleusercontent.com',
-    #         'secret': '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',
-    #         'key': '',
-    #     }
-    # },
     'google': {
         'SCOPE': ['profile', 'email'],
         'APP': {
-            'client_id': '802944885729-5p6m0ku0hgmbirpgguai9s794lppqgui.apps.googleusercontent.com',
-            'secret': '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',
+            'client_id': '942851459790-okvqvkft4cnmjode76k5e8ch8vbc20ln.apps.googleusercontent.com',
+            'secret': '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',
             'key': '',
         }
+    
+    # 'google': {
+    #     'SCOPE': ['profile', 'email'],
+    #     'APP': {
+    #         'client_id': '802944885729-5p6m0ku0hgmbirpgguai9s794lppqgui.apps.googleusercontent.com',
+    #         'secret': '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',
+    #         'key': '',
+    #     }
     },
 }
 
@@ -246,8 +247,9 @@ LOGOUT_URL = 'rest_framework:logout'
 
 # LOGOUT_REDIRECT_URL = 'http://127.0.0.1:8000/accounts/login'
 
-LOGIN_REDIRECT_URL = 'https://18.132.235.141:8000/api/profile/'
-LOGOUT_REDIRECT_URL = 'https://18.132.235.141:8000/accounts/login'
+LOGIN_REDIRECT_URL = 'https://ec2-18-132-235-141.eu-west-2.compute.amazonaws.com/api/profile/'
+LOGOUT_REDIRECT_URL = 'https://ec2-18-132-235-141.eu-west-2.compute.amazonaws.com/accounts/login'
+
 
 
 SPECTACULAR_SETTINGS = {
@@ -270,7 +272,7 @@ SPECTACULAR_SETTINGS = {
 SWAGGER_SETTINGS = {
     
     # 'DEFAULT_API_URL': 'http://127.0.0.1/api/swagger/',
-    'DEFAULT_API_URL': 'https://18.132.235.141/api/swagger/',
+    'DEFAULT_API_URL': 'https://ec2-18-132-235-141.eu-west-2.compute.amazonaws.com/api/swagger/',
     # 'DEFAULT_API_URL': 'https://prayerapp1.onrender.com/api/swagger/',
     'DEFAULT_VALIDATOR_CLASS': None,
    
