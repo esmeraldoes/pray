@@ -78,7 +78,6 @@ GRPC_SETTINGS = {
 GRPC_MAX_WORKERS = 10
 # GRPC_SERVER_ADDRESS = '127.0.0.1'
 GRPC_SERVER_ADDRESS = '18.132.235.141'
-GRPC_SERVER_ADDRESS = '18.132.235.141'
 
 
 GRPC_ENABLED = True
@@ -107,7 +106,6 @@ ROOT_URLCONF = 'backend.urls'
 CORS_ALLOW_ALL_ORIGINS = True
 
 CSRF_TRUSTED_ORIGINS = [
-    'http://18.132.235.141',
     'http://18.132.235.141',
     'http://localhost:8000',
     '18.132.235.141',
@@ -248,8 +246,6 @@ LOGOUT_URL = 'rest_framework:logout'
 
 # LOGOUT_REDIRECT_URL = 'http://127.0.0.1:8000/accounts/login'
 
-LOGIN_REDIRECT_URL = 'https://18.132.235.141:8000/api/profile/'
-LOGOUT_REDIRECT_URL = 'https://18.132.235.141:8000/accounts/login'
 LOGIN_REDIRECT_URL = 'https://18.132.235.141:8000/api/profile/'
 LOGOUT_REDIRECT_URL = 'https://18.132.235.141:8000/accounts/login'
 
