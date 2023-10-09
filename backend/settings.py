@@ -77,7 +77,7 @@ INSTALLED_APPS = [
 
 GRPC_MAX_WORKERS = 10
 # GRPC_SERVER_ADDRESS = '127.0.0.1'
-GRPC_SERVER_ADDRESS = 'http://18.132.235.141/'
+GRPC_SERVER_ADDRESS = 'http://18.132.235.141'
 
 
 GRPC_ENABLED = True
@@ -273,7 +273,7 @@ SPECTACULAR_SETTINGS = {
 SWAGGER_SETTINGS = {
     
     # 'DEFAULT_API_URL': 'http://127.0.0.1/api/swagger/',
-    'DEFAULT_API_URL': 'http://18.132.235.141//api/swagger/',
+    'DEFAULT_API_URL': 'http://18.132.235.141/api/swagger/',
     # 'DEFAULT_API_URL': 'http://prayerapp1.onrender.com/api/swagger/',
     'DEFAULT_VALIDATOR_CLASS': None,
    
