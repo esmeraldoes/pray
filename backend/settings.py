@@ -107,10 +107,11 @@ CORS_ALLOW_ALL_ORIGINS = True
 
 CSRF_TRUSTED_ORIGINS = [
     'https://ec2-18-132-235-141.eu-west-2.compute.amazonaws.com',
+    'http://ec2-18-132-235-141.eu-west-2.compute.amazonaws.com',
+    'https://ec2-18-132-235-141.eu-west-2.compute.amazonaws.com:8000',
+    'https://18.132.235.141',
     'http://18.132.235.141',
     'http://localhost:8000',
-    '18.132.235.141',
-   
 ]
 
 
@@ -118,7 +119,7 @@ CSRF_TRUSTED_ORIGINS = [
 
 
 # CORS_ALLOWED_ORIGINS = [    
-#     "https://prayerapp1.onrender.com",
+#     "http://prayerapp1.onrender.com",
 #     "http://localhost:8000",
 #     "http://127.0.0.1:8000",
 #     "http://localhost:8000",
@@ -273,7 +274,7 @@ SWAGGER_SETTINGS = {
     
     # 'DEFAULT_API_URL': 'http://127.0.0.1/api/swagger/',
     'DEFAULT_API_URL': 'https://ec2-18-132-235-141.eu-west-2.compute.amazonaws.com/api/swagger/',
-    # 'DEFAULT_API_URL': 'https://prayerapp1.onrender.com/api/swagger/',
+    # 'DEFAULT_API_URL': 'http://prayerapp1.onrender.com/api/swagger/',
     'DEFAULT_VALIDATOR_CLASS': None,
    
 }
