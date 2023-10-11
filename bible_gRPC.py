@@ -23,7 +23,7 @@ from mygrpcapp import bible_pb2_grpc as bible_service_pb2_grpc
 from random import choice
 
 # server_address = '127.0.0.1:50051' 
-server_address = f'{settings.GRPC_SERVER_ADDRESS}:50051' 
+server_address = f'{settings.GRPC_SERVER_ADDRESS}:8001' 
 
 
 class BibleServiceServicer(bible_service_pb2_grpc.BibleServiceServicer):
