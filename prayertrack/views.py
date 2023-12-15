@@ -2,6 +2,8 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from rest_framework.response import Response
 from rest_framework.views import APIView
 import grpc
+# from prayertrack import prayer_tracker_pb2
+# from prayertrack import prayer_tracker_pb2_grpc
 from prayertrack import prayer_tracker_pb2
 from prayertrack import prayer_tracker_pb2_grpc
 from .serializers import (StartPrayerResponseSerializer, PrayerUpdateResponseSerializer, 

@@ -3,20 +3,13 @@
 from django.contrib.auth import get_user_model
 from rest_framework import serializers
 
-User = get_user_model()
-
-
-from rest_auth.serializers import LoginSerializer
-
-class CustomLoginSerializer(LoginSerializer):
-    def validate(self, attrs):
-        attrs = super().validate(attrs)
-
-        return attrs
-
-
 from rest_framework import serializers
 from allauth.account.models import EmailAddress 
+
+from rest_framework import serializers
+from .models import CustomUser, UserProfile
+
+User = get_user_model()
 
 class UserInfoSerializer(serializers.Serializer):
     username = serializers.CharField()
@@ -24,7 +17,6 @@ class UserInfoSerializer(serializers.Serializer):
     first_name = serializers.CharField()
     last_name = serializers.CharField()
    
-
     def to_representation(self, instance):
         user = self.context['request'].user
         try:
@@ -39,8 +31,6 @@ class UserInfoSerializer(serializers.Serializer):
         except EmailAddress.DoesNotExist:
             return {}
 
-from rest_framework import serializers
-from .models import CustomUser, UserProfile
 
 class UserProfileSerializer(serializers.ModelSerializer):
     class Meta:
@@ -62,7 +52,7 @@ class CustomUserSerializer(serializers.ModelSerializer):
         except UserProfile.DoesNotExist:
             return None 
 
-class UserSerializer(serializers.ModelSerializer):
+class UserSerializerz(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ('id', 'username', 'email', 'password')
@@ -74,18 +64,43 @@ class UserSerializer(serializers.ModelSerializer):
     
 
 
-from rest_framework import serializers
-from allauth.socialaccount.models import SocialAccount
-
-class SocialAccountSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = SocialAccount
-        fields = ('user', 'provider', 'uid', 'extra_data', 'last_login')
-
-
-
-
 class LoginSerializer(serializers.Serializer):
     username = serializers.CharField()
     password = serializers.CharField()
+#######DINERO
+from rest_framework import serializers
+# from django.contrib.auth.models import User
 
+
+
+
+from djoser.serializers import UserCreateSerializer
+from .models import CustomUser
+
+class CustomUserCreateSerializer(UserCreateSerializer):
+    class Meta(UserCreateSerializer.Meta):
+        model = CustomUser  # Use your custom user model
+        fields = ('email', 'username', 'password', 'first_name', 'last_name')
+
+    def perform_create(self, validated_data):
+        user = super().perform_create(validated_data)
+        user.first_name = validated_data.get('first_name', '')
+        user.last_name = validated_data.get('last_name', '')
+        user.save()
+        return user
+    
+class UserRegistrationSerializer(serializers.ModelSerializer):
+    password = serializers.CharField(write_only=True)
+
+    def create(self, validated_data):
+        user = User.objects.create_user(
+            username=validated_data['username'],
+            email=validated_data['email'],
+            password=validated_data['password'],
+        )
+        user.save()
+        return user
+
+    class Meta:
+        model = User
+        fields = ('username', 'email', 'password')

@@ -11,8 +11,10 @@ urlpatterns = [
     
     path('admin/', admin.site.urls),
     path('accounts/', include('allauth.urls')),
-    path('rest-auth/', include('rest_auth.urls')),
-    path('rest-auth/registration/', include('rest_auth.registration.urls')),
+    path('api/', include('djoser.urls')),
+    path('api/', include('djoser.urls.jwt')),
+    # path('rest-auth/', include('rest_auth.urls')),
+    # path('rest-auth/registration/', include('rest_auth.registration.urls')),
     path('api-auth/', include('rest_framework.urls')),
     path('api/schema/', SpectacularAPIView.as_view(), name='schema'),
     path('', SpectacularSwaggerView.as_view(url_name='schema'), name='swagger-ui'),
@@ -20,6 +22,8 @@ urlpatterns = [
     path('bible/', include('mygrpcapp.urls')),
     path('prayertracker/', include('prayertrack.urls')),
     path('communityapps/', include('communityapp.urls')),
+    path('prayersessions/', include('prayer_sessions.urls')),
+    #  path('prayersessions/', include('prayer_sessions.routing')),
 
 ]
 

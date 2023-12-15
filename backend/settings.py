@@ -42,11 +42,16 @@ INSTALLED_APPS = [
     'bibleApp',
     'mygrpcapp',
     'communityapp',
+    'prayer_sessions',
     'prayertrack',
     'corsheaders',
     'django_extensions',
+    'channels',
 
-    'rest_auth',
+    # 'rest_auth',
+    # 'rest_framework_jwt',
+    'djoser',
+    # 'djoser.contrib.authtoken',
     'social_django',
     'drf_spectacular',
     'django_filters',
@@ -74,10 +79,15 @@ INSTALLED_APPS = [
 #     },
 # }
 
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels.layers.InMemoryChannelLayer',
+    },
+}
 
 GRPC_MAX_WORKERS = 10
-# GRPC_SERVER_ADDRESS = '127.0.0.1'
-GRPC_SERVER_ADDRESS = 'https://ec2-18-132-235-141.eu-west-2.compute.amazonaws.com'
+GRPC_SERVER_ADDRESS = '127.0.0.1'
+# GRPC_SERVER_ADDRESS = 'https://ec2-18-132-235-141.eu-west-2.compute.amazonaws.com'
 
 
 GRPC_ENABLED = True
@@ -112,6 +122,7 @@ CSRF_TRUSTED_ORIGINS = [
     'https://18.132.235.141',
     'http://18.132.235.141',
     'http://localhost:8000',
+    'http://127.0.0.1:8000',
 ]
 
 
@@ -144,6 +155,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'backend.wsgi.application'
+ASGI_APPLICATION = 'backend.asgi.application'
 
 
 # Database
@@ -166,8 +178,24 @@ AUTHENTICATION_BACKENDS = [
     'social_core.backends.google.GoogleOAuth2',
 ]
 SITE_ID = 3
+
+
+DJOSER = {
+    'SERIALIZERS': {
+        'user_create': 'bibleApp.serializers.CustomUserCreateSerializer',  
+        # 'user_create': 'bibleApp.serializers.UserRegistrationSerializer',  
+    },
+    # 'PASSWORD_RESET_CONFIRM_URL': '#/password/reset/confirm/{uid}/{token}',
+    # 'USERNAME_RESET_CONFIRM_URL': '#/username/reset/confirm/{uid}/{token}',
+    # 'ACTIVATION_URL': '#/activate/{uid}/{token}',
+    # # 'SEND_ACTIVATION_EMAIL': True,
+    # 'PASSWORD_CHANGED_EMAIL_CONFIRMATION': True,
+}
+
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.TokenAuthentication',
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
         'rest_framework.authentication.TokenAuthentication',  
         'rest_framework.authentication.SessionAuthentication', 
     ),
@@ -242,14 +270,14 @@ LOGOUT_URL = 'rest_framework:logout'
 
 # LOGIN_REDIRECT_URL = '/'
 
-# # LOGIN_REDIRECT_URL = 'http://127.0.0.1:8000/api/profile/'
+LOGIN_REDIRECT_URL = 'http://127.0.0.1:8000/usermanagement/profile/'
 
 # # LOGIN_REDIRECT_URL = 'http://127.0.0.1:8000/api/login'
 
-# LOGOUT_REDIRECT_URL = 'http://127.0.0.1:8000/accounts/login'
+LOGOUT_REDIRECT_URL = 'http://127.0.0.1:8000/accounts/login'
 
-LOGIN_REDIRECT_URL = 'https://ec2-18-132-235-141.eu-west-2.compute.amazonaws.com/api/profile/'
-LOGOUT_REDIRECT_URL = 'https://ec2-18-132-235-141.eu-west-2.compute.amazonaws.com/accounts/login'
+# LOGIN_REDIRECT_URL = 'https://ec2-18-132-235-141.eu-west-2.compute.amazonaws.com/api/profile/'
+# LOGOUT_REDIRECT_URL = 'https://ec2-18-132-235-141.eu-west-2.compute.amazonaws.com/accounts/login'
 
 
 
@@ -270,14 +298,14 @@ SPECTACULAR_SETTINGS = {
 
 
 
-SWAGGER_SETTINGS = {
+# SWAGGER_SETTINGS = {
     
-    # 'DEFAULT_API_URL': 'http://127.0.0.1/api/swagger/',
-    'DEFAULT_API_URL': 'https://ec2-18-132-235-141.eu-west-2.compute.amazonaws.com/api/swagger/',
-    # 'DEFAULT_API_URL': 'http://prayerapp1.onrender.com/api/swagger/',
-    'DEFAULT_VALIDATOR_CLASS': None,
+#     # 'DEFAULT_API_URL': 'http://127.0.0.1/api/swagger/',
+#     'DEFAULT_API_URL': 'https://ec2-18-132-235-141.eu-west-2.compute.amazonaws.com/api/swagger/',
+#     # 'DEFAULT_API_URL': 'http://prayerapp1.onrender.com/api/swagger/',
+#     'DEFAULT_VALIDATOR_CLASS': None,
    
-}
+# }
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators

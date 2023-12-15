@@ -8,7 +8,7 @@ import grpc
 from mygrpcapp import bible_pb2
 from mygrpcapp import bible_pb2_grpc
 
-from mygrpcapp.bible_service import BibleServiceServicer
+from mygrpcapp.bibbbtrble_service import BibleServiceServicer
 
 from rest_framework import status
 from rest_framework.response import Response

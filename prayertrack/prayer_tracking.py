@@ -3,7 +3,12 @@ from concurrent import futures
 from datetime import datetime, timedelta
 from prayertrack import prayer_tracker_pb2
 from prayertrack import prayer_tracker_pb2_grpc
-# import prayer_tracker_pb2
+
+from django.core.asgiref.sync import async_to_sync
+
+
+from asgiref.sync import sync_to_async
+
 # import prayer_tracker_pb2_grpc
 
 from django.conf import settings
@@ -13,6 +18,7 @@ server_address = f'{settings.GRPC_SERVER_ADDRESS}:50053'
 
 
 import webrtcvad
+from channels.layers import get_channel_layer
 from collections import defaultdict
 
 class PrayerTrackerServicer(prayer_tracker_pb2_grpc.PrayerTrackerServicer):
@@ -38,8 +44,11 @@ class PrayerTrackerServicer(prayer_tracker_pb2_grpc.PrayerTrackerServicer):
             response = prayer_tracker_pb2.StartPrayerResponse(message='Prayer is already active.')
         return response
 
-    def PrayerUpdates(self, request_iterator, context):
+    async def PrayerUpdates(self, request_iterator, context):
         user_id = next(request_iterator).user_id
+         # Get the channel layer for handling WebSocket communication
+        channel_layer = get_channel_layer()
+
         while True:
             if self.prayer_sessions[user_id]['active']:
                 prayer_start_time = self.prayer_sessions[user_id]['start_time']
@@ -59,6 +68,14 @@ class PrayerTrackerServicer(prayer_tracker_pb2_grpc.PrayerTrackerServicer):
                     prayer_duration=str(prayer_duration),
                     voice_duration=str(voice_duration),
                     voice_detected=voice_detected,
+                )
+                # Broadcast the response to all connected WebSocket clients
+                await async_to_sync(channel_layer.group_send)(
+                    f'user_{user_id}',
+                    {
+                        'type': 'send_prayer_update',
+                        'response': response.SerializeToString(),
+                    }
                 )
                 yield response
             else:

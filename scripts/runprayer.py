@@ -10,7 +10,7 @@
 #     print('Please make sure that you have configured the Django settings module before running this script.')
 #     exit(1)
 import sys
-from mygrpcapp import bible_service
+from mygrpcapp import bibbbtrble_service
 
 # The rest of your code goes here.
 
@@ -19,7 +19,7 @@ if __name__ == '__main__':
     # sys.path.append('C:\\Users\\HP\\Desktop\\shadow')
     # sys.path.append(r'C:\\Users\\HP\Desktop\\shadow\\mygrpcapp')
     # prayer_tracking.serve() 
-    bible_service.grpc_serve() 
+    bibbbtrble_service.grpc_serve() 
 
 
 
