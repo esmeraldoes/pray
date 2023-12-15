@@ -36,7 +36,7 @@ from .serializers import (
 )
 from django.conf import settings
 # server_address = '127.0.0.1:50051' 
-server_address = f'{settings.GRPC_SERVER_ADDRESS}:50051' 
+server_address = f'{settings.GRPC_SERVER_ADDRESS}:8001' 
 
 
 class BibleVersionsView(APIView):
