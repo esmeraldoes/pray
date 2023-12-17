@@ -271,7 +271,8 @@ LOGOUT_URL = 'rest_framework:logout'
 
 # LOGIN_REDIRECT_URL = '/'
 
-LOGIN_REDIRECT_URL = 'https://ec2-18-132-235-141.eu-west-2.compute.amazonaws.com:8000/usermanagement/profile/'
+LOGIN_REDIRECT_URL = 'https://ec2-18-132-235-141.eu-west-2.compute.amazonaws.com/usermanagement/profile/'
+# LOGIN_REDIRECT_URL = 'https://ec2-18-132-235-141.eu-west-2.compute.amazonaws.com:8000/usermanagement/profile/'
 # LOGIN_REDIRECT_URL = 'http://127.0.0.1:8000/usermanagement/profile/'
 
 # # LOGIN_REDIRECT_URL = 'http://127.0.0.1:8000/api/login'
@@ -280,7 +281,7 @@ LOGIN_REDIRECT_URL = 'https://ec2-18-132-235-141.eu-west-2.compute.amazonaws.com
 # LOGOUT_REDIRECT_URL = 'http://127.0.0.1:8000/accounts/login'
 
 # LOGIN_REDIRECT_URL = 'https://ec2-18-132-235-141.eu-west-2.compute.amazonaws.com/api/profile/'
-LOGOUT_REDIRECT_URL = 'https://ec2-18-132-235-141.eu-west-2.compute.amazonaws.com:8000/accounts/login'
+LOGOUT_REDIRECT_URL = 'https://ec2-18-132-235-141.eu-west-2.compute.amazonaws.com/accounts/login'
 
 
 
