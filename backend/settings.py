@@ -86,9 +86,9 @@ CHANNEL_LAYERS = {
 }
 
 GRPC_MAX_WORKERS = 10
-GRPC_SERVER_ADDRESS = 'http://18.132.235.141:8000/'
+# GRPC_SERVER_ADDRESS = 'http://18.132.235.141:8000/'
 # GRPC_SERVER_ADDRESS = '127.0.0.1'
-# GRPC_SERVER_ADDRESS = 'https://ec2-18-132-235-141.eu-west-2.compute.amazonaws.com'
+GRPC_SERVER_ADDRESS = 'https://ec2-18-132-235-141.eu-west-2.compute.amazonaws.com'
 
 
 GRPC_ENABLED = True
@@ -271,16 +271,16 @@ LOGOUT_URL = 'rest_framework:logout'
 
 # LOGIN_REDIRECT_URL = '/'
 
-LOGIN_REDIRECT_URL = 'http://18.132.235.141:8000/usermanagement/profile/'
+LOGIN_REDIRECT_URL = 'https://ec2-18-132-235-141.eu-west-2.compute.amazonaws.com/usermanagement/profile/'
 # LOGIN_REDIRECT_URL = 'http://127.0.0.1:8000/usermanagement/profile/'
 
 # # LOGIN_REDIRECT_URL = 'http://127.0.0.1:8000/api/login'
 
-LOGOUT_REDIRECT_URL = 'http://18.132.235.141:8000/accounts/login'
+# LOGOUT_REDIRECT_URL = 'http://18.132.235.141:8000/accounts/login'
 # LOGOUT_REDIRECT_URL = 'http://127.0.0.1:8000/accounts/login'
 
 # LOGIN_REDIRECT_URL = 'https://ec2-18-132-235-141.eu-west-2.compute.amazonaws.com/api/profile/'
-# LOGOUT_REDIRECT_URL = 'https://ec2-18-132-235-141.eu-west-2.compute.amazonaws.com/accounts/login'
+LOGOUT_REDIRECT_URL = 'https://ec2-18-132-235-141.eu-west-2.compute.amazonaws.com/accounts/login'
 
 
 
@@ -304,7 +304,7 @@ SPECTACULAR_SETTINGS = {
 SWAGGER_SETTINGS = {
     
     # 'DEFAULT_API_URL': 'http://127.0.0.1/api/swagger/',
-    'DEFAULT_API_URL': 'http://18.132.235.141:8000/api/swagger/',
+    'DEFAULT_API_URL': 'https://ec2-18-132-235-141.eu-west-2.compute.amazonaws.com/api/swagger/',
     # 'DEFAULT_API_URL': 'http://prayerapp1.onrender.com/api/swagger/',
     'DEFAULT_VALIDATOR_CLASS': None,
    
